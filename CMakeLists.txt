@@ -15,20 +15,24 @@ else()
 endif()
 
 
+set(ORIGINAL_DIR "original")
+set(IMAGELIB_DIR "original/imageLib")
+
+
 find_package(PNG REQUIRED)
-include_directories("imageLib")
+include_directories(${IMAGELIB_DIR})
 include_directories(${PNG_INCLUDE_DIR})
-file(GLOB IMAGE_LIB_SRC "imageLib/*.cpp")
+file(GLOB IMAGE_LIB_SRC "${IMAGELIB_DIR}/*.cpp")
 add_library("imageLib" STATIC ${IMAGE_LIB_SRC})
 target_link_libraries("imageLib" ${PNG_LIBRARY})
 
 
-include_directories(".")
-set(COLORTEST_SRC colortest.cpp colorcode.cpp)
+include_directories(${ORIGINAL_DIR})
+set(COLORTEST_SRC ${ORIGINAL_DIR}/colortest.cpp ${ORIGINAL_DIR}/colorcode.cpp)
 add_executable("colortest" ${COLORTEST_SRC})
 target_link_libraries("colortest" imageLib)
 
 
-set(COLOR_FLOW_SRC color_flow.cpp flowIO.cpp colorcode.cpp)
+set(COLOR_FLOW_SRC ${ORIGINAL_DIR}/color_flow.cpp ${ORIGINAL_DIR}/flowIO.cpp ${ORIGINAL_DIR}/colorcode.cpp)
 add_executable("color_flow" ${COLOR_FLOW_SRC})
 target_link_libraries("color_flow" imageLib)

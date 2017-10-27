@@ -1,5 +1,6 @@
-cd "%~dp0\.."
+cd "%~dp0.."
 
+rmdir /S /Q build
 mkdir build
 cd build
 
