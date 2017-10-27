@@ -36,3 +36,12 @@ target_link_libraries("colortest" imageLib)
 set(COLOR_FLOW_SRC ${ORIGINAL_DIR}/color_flow.cpp ${ORIGINAL_DIR}/flowIO.cpp ${ORIGINAL_DIR}/colorcode.cpp)
 add_executable("color_flow" ${COLOR_FLOW_SRC})
 target_link_libraries("color_flow" imageLib)
+
+
+file(GLOB_RECURSE FLOWCODE_HEADER "${ORIGINAL_DIR}/*.h")
+add_executable("colorflow"
+    ${FLOWCODE_HEADER}
+    ${ORIGINAL_DIR}/flowIO.cpp
+    ${ORIGINAL_DIR}/colorcode.cpp
+    "colorflow/colorflow.cpp")
+target_link_libraries("colorflow" imageLib)
