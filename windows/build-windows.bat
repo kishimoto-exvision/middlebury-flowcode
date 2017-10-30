@@ -5,9 +5,10 @@ mkdir build
 cd build
 
 cmake .. -G "Visual Studio 14 2015 Win64" ^
--DCMAKE_CONFIGURATION_TYPES:STRING="Release;Debug"
+-DCMAKE_CONFIGURATION_TYPES:STRING="Release"
 
 cmake --build "." --target "ALL_BUILD" --config "Release"
+cmake --build "." --target "INSTALL" --config "Release"
 
 copy "Release\colorflow.exe" "..\windows"
 cd "..\windows"
