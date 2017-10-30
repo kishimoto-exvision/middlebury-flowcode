@@ -49,7 +49,8 @@ set(Flowcode_VERSION_MAJOR 1)
 set(Flowcode_VERSION_MINOR 0)
 set(Flowcode_VERSION_STRING ${Flowcode_VERSION_MAJOR}.${Flowcode_VERSION_MINOR})
 set(Flowcode_Name "Flowcode")
-set(Flowcode_VersionedName "${Flowcode_Name}-${Flowcode_VERSION_STRING}")
+#set(Flowcode_VersionedName "${Flowcode_Name}-${Flowcode_VERSION_STRING}")
+set(Flowcode_VersionedName "${Flowcode_Name}")
 set(CMAKE_INCLUDE_CURRENT_DIR_IN_INTERFACE ON)
 include_directories(${IMAGELIB_DIR})
 include_directories(${PNG_INCLUDE_DIR})
@@ -60,6 +61,8 @@ target_link_libraries(${Flowcode_VersionedName} ${PNG_LIBRARY})
 
 set_target_properties(${Flowcode_VersionedName} PROPERTIES PUBLIC_HEADER "${FLOWCODE_HEADERS}")
 set_target_properties(${Flowcode_VersionedName} PROPERTIES VERSION ${Flowcode_VERSION_STRING})
+#set_target_properties(${Flowcode_VersionedName} PROPERTIES SOVERSION ${Flowcode_VERSION_MAJOR})
+
 install(
     TARGETS ${Flowcode_VersionedName}
     EXPORT ${Flowcode_VersionedName}Export
