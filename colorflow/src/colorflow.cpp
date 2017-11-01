@@ -10,14 +10,13 @@ using namespace std;
 
 int main(int argc, char *argv[])
 {
-    if (false)
-    {
-        //char* argv_debug[] = { "", "-c" };
-        //char* argv_debug[] = { "", "-c", "20", "351" };
-        char* argv_debug[] = { "", "-quiet", "../../examples/lmb-freiburg_flownet2_result.flo" };
-        argc = sizeof(argv_debug) / sizeof(char*);
-        argv = argv_debug;
-    }
+#if 0
+    char* argv_debug[] = { "", "-c" };
+    //char* argv_debug[] = { "", "-c", "20", "351" };
+    //char* argv_debug[] = { "", "-quiet", "../../examples/lmb-freiburg_flownet2_result.flo" };
+    argc = sizeof(argv_debug) / sizeof(char*);
+    argv = argv_debug;
+#endif
 
     try
     {
