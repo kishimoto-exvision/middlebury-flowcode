@@ -28,6 +28,7 @@
 #include <stdlib.h>
 #include <exception>
 
+#include <opencv2/core.hpp>
 #include <opencv2/highgui.hpp>
 #include <opencv2/imgproc.hpp>
 
@@ -181,30 +182,38 @@ void FlowImage::GetReferenceImage(cv::Mat& reference_image, float flow_l2_distan
     float range = 1.04 * flow_l2_distance_max;
     try
     {
-        reference_image.zeros(image_one_side_length, image_one_side_length, CV_8UC3);
-        FlowImage util;
-
+        if (reference_image.rows != image_one_side_length || reference_image.cols != image_one_side_length)
+        {
+            reference_image = cv::Mat(image_one_side_length, image_one_side_length, CV_8UC3);
+        }
         int s2 = image_one_side_length / 2;
-        for (int y = 0; y < image_one_side_length; y++) {
-            for (int x = 0; x < image_one_side_length; x++) {
+        for (int y = 0; y < image_one_side_length; y++)
+        {
+            int row_offset = y * image_one_side_length;
+            uchar* rgb_row_ptr = reference_image.data + 3 * row_offset;
+            for (int x = 0; x < image_one_side_length; x++)
+            {
                 float fx = (float)x / (float)s2 * range - range;
                 float fy = (float)y / (float)s2 * range - range;
                 // make black coordinate axes
                 if (x == s2 || y == s2)
                     continue;
-                util.GetColor(fx / flow_l2_distance_max, fy / flow_l2_distance_max, reference_image.at<uchar*>(y, x));
+                GetColor(fx / flow_l2_distance_max, fy / flow_l2_distance_max, rgb_row_ptr + 3 * x);
             }
         }
         int ir = (int)flow_l2_distance_max;
         int ticksize = image_one_side_length < 120 ? 1 : 2;
-        for (int k = -ir; k <= ir; k++) {
+        for (int k = -ir; k <= ir; k++)
+        {
             int ik = (int)(k / range * s2) + s2;
-            for (int t = -ticksize; t <= ticksize; t++) {
-                uchar *pix;
-                pix = reference_image.at<uchar*>(s2 + t, ik, 0);
-                pix[0] = pix[1] = pix[2] = 0;
-                pix = reference_image.at<uchar*>(ik, s2 + t, 0);
-                pix[0] = pix[1] = pix[2] = 0;
+            for (int t = -ticksize; t <= ticksize; t++)
+            {
+                reference_image.at<uchar>(s2 + t, ik, 0) = 0;
+                reference_image.at<uchar>(s2 + t, ik, 1) = 0;
+                reference_image.at<uchar>(s2 + t, ik, 2) = 0;
+                reference_image.at<uchar*>(ik, s2 + t, 0) = 0;
+                reference_image.at<uchar*>(ik, s2 + t, 1) = 0;
+                reference_image.at<uchar*>(ik, s2 + t, 2) = 0;
             }
         }
     }
@@ -229,8 +238,8 @@ float FlowImage::GetFlowL2DistanceMaximum()
         float* flow_row_ptr = ((float*)FlowMatF32C2.data) + 2 * row_offset;
         for (int x = 0; x < width; x++)
         {
-            float fx = -flow_row_ptr[2 * x + 0];
-            float fy = -flow_row_ptr[2 * x + 1];
+            float fx = flow_row_ptr[2 * x + 0];
+            float fy = flow_row_ptr[2 * x + 1];
             if (IsUnknownFlow(fx, fy)) { continue; }
             maxx = __max(maxx, fx);
             maxy = __max(maxy, fy);
@@ -263,7 +272,7 @@ void FlowImage::GetColorFlowImage(cv::Mat& color_flow_image, float flow_l2_dista
     if (width <= 0 || height <= 0) { throw CError("FlowMatF32C2 is invalid"); }
     if (color_flow_image.rows != FlowMatF32C2.rows || color_flow_image.cols != FlowMatF32C2.cols)
     {
-        color_flow_image.zeros(height, width, CV_8UC3);
+        color_flow_image = cv::Mat(height, width, CV_8UC3);
     }
 
     for (int y = 0; y < height; y++)
@@ -273,8 +282,8 @@ void FlowImage::GetColorFlowImage(cv::Mat& color_flow_image, float flow_l2_dista
         uchar* rgb_row_ptr = color_flow_image.data + 3 * row_offset;
         for (int x = 0; x < width; x++)
         {
-            float fx = -flow_row_ptr[2 * x + 0];
-            float fy = -flow_row_ptr[2 * x + 1];
+            float fx = flow_row_ptr[2 * x + 0];
+            float fy = flow_row_ptr[2 * x + 1];
             uchar* pix = rgb_row_ptr + 3 * x;
             if (IsUnknownFlow(fx, fy)) { pix[0] = pix[1] = pix[2] = 0; }
             else
