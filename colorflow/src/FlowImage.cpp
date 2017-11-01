@@ -24,6 +24,7 @@
 #define TAG_FLOAT 202021.25  // check for this when READING the file
 #define TAG_STRING "PIEH"    // use this when WRITING the file
 
+#include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
 #include <exception>
@@ -208,12 +209,10 @@ void FlowImage::GetReferenceImage(cv::Mat& reference_image, float flow_l2_distan
             int ik = (int)(k / range * s2) + s2;
             for (int t = -ticksize; t <= ticksize; t++)
             {
-                reference_image.at<uchar>(s2 + t, ik, 0) = 0;
-                reference_image.at<uchar>(s2 + t, ik, 1) = 0;
-                reference_image.at<uchar>(s2 + t, ik, 2) = 0;
-                reference_image.at<uchar*>(ik, s2 + t, 0) = 0;
-                reference_image.at<uchar*>(ik, s2 + t, 1) = 0;
-                reference_image.at<uchar*>(ik, s2 + t, 2) = 0;
+                auto&& p1 = reference_image.at<cv::Vec3b>(s2 + t, ik);
+                p1[0] = p1[1] = p1[2] = 0;
+                auto&& p2 = reference_image.at<cv::Vec3b>(ik, s2 + t);
+                p2[0] = p2[1] = p2[2] = 0;
             }
         }
     }

@@ -12,12 +12,8 @@ int main(int argc, char *argv[])
 {
     if (false)
     {
-        char* argv_debug[] = { "", "-c" };
-        argc = sizeof(argv_debug) / sizeof(char*);
-        argv = argv_debug;
-    }
-    else if (false)
-    {
+        //char* argv_debug[] = { "", "-c" };
+        //char* argv_debug[] = { "", "-c", "20", "351" };
         char* argv_debug[] = { "", "-quiet", "../../examples/lmb-freiburg_flownet2_result.flo" };
         argc = sizeof(argv_debug) / sizeof(char*);
         argv = argv_debug;
@@ -35,9 +31,7 @@ int main(int argc, char *argv[])
             int image_size = (argn < argc) ? atoi(argv[argn++]) : 151;
             char reference_image_path[256] = { 0 };
             sprintf(reference_image_path, "colortest_range=%f_size=%d.png", flow_l2_distance_max, image_size);
-            cout << flow_l2_distance_max << endl;
-            cout << image_size << endl;
-            cout << reference_image_path << endl;
+            cout << "reference_image_path: " << reference_image_path << endl;
             {
                 cv::Mat reference_image;
                 flow_image.GetReferenceImage(reference_image, flow_l2_distance_max, image_size);
