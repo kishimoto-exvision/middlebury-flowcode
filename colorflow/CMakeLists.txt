@@ -11,7 +11,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 if(WIN32)
     # Is '-G "... Win64"' only way to generate files for x64 Platform?
     #add_definitions(-DSYSTEM_PROCESSOR=x64)
-    add_definitions(-D_CRT_SECURE_NO_WARNINGS -DM_PI=3.14159265358979)
+    add_definitions(-D_CRT_SECURE_NO_WARNINGS -D_USE_MATH_DEFINES)
     add_compile_options(/Zi /W3 /wd4101 /wd4819 /wd4244)
     set(CMAKE_CONFIGURATION_TYPES "Release" CACHE STRING "limited configs" FORCE)
 
