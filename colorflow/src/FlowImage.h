@@ -36,7 +36,7 @@ public:
     {
         return (fabs(u) > UnknownFlow())
             || (fabs(v) > UnknownFlow())
-            || isnan(u) || isnan(v);
+            || std::isnan(u) || std::isnan(v);
     }
     static bool IsUnknownFlow(float *f) { return IsUnknownFlow(f[0], f[1]); }
 

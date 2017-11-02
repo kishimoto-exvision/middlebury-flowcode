@@ -22,7 +22,7 @@ else()
 endif()
 
 
-find_package(OpenCV COMPONENTS core highgui imgproc REQUIRED)
+find_package(OpenCV COMPONENTS core highgui imgproc imgcodecs REQUIRED)
 include_directories(${OpenCV_INCLUDE_DIRS})
 link_directories(${OpenCV_LIBRARY_DIRS})
 

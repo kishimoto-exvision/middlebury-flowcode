@@ -5,6 +5,7 @@
 #include <opencv2/core.hpp>
 #include <opencv2/highgui.hpp>
 #include <opencv2/imgproc.hpp>
+#include <opencv2/imgcodecs.hpp>
 
 using namespace std;
 
@@ -28,8 +29,7 @@ int main(int argc, char *argv[])
             argn++;
             float flow_l2_distance_max = (argn < argc) ? atof(argv[argn++]) : 10;
             int image_size = (argn < argc) ? atoi(argv[argn++]) : 151;
-            char reference_image_path[256] = { 0 };
-            sprintf(reference_image_path, "colortest_range=%f_size=%d.png", flow_l2_distance_max, image_size);
+            string reference_image_path = "colortest_range=" + to_string(flow_l2_distance_max) + " _size=" + to_string(image_size) + ".png";
             cout << "reference_image_path: " << reference_image_path << endl;
             {
                 cv::Mat reference_image;

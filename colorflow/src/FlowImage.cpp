@@ -39,7 +39,7 @@ using namespace std;
 
 void FlowImage::ReadFromFloFile(const char* file_path)
 {
-    if (file_path == "")
+    if (strcmp(file_path, "") == 0)
         throw CError("ReadFlowFile: empty file_path");
 
     const char *dot = strrchr(file_path, '.');
@@ -85,7 +85,7 @@ void FlowImage::ReadFromFloFile(const char* file_path)
 // write a 2-band image into flow file 
 void FlowImage::WriteToFloFile(const char* file_path)
 {
-    if (file_path == "")
+    if (strcmp(file_path, "") == 0)
         throw CError("WriteFlowFile: empty file_path");
 
     const char *dot = strrchr(file_path, '.');
@@ -240,12 +240,12 @@ float FlowImage::GetFlowL2DistanceMaximum()
             float fx = flow_row_ptr[2 * x + 0];
             float fy = flow_row_ptr[2 * x + 1];
             if (IsUnknownFlow(fx, fy)) { continue; }
-            maxx = __max(maxx, fx);
-            maxy = __max(maxy, fy);
-            minx = __min(minx, fx);
-            miny = __min(miny, fy);
+            maxx = std::max(maxx, fx);
+            maxy = std::max(maxy, fy);
+            minx = std::min(minx, fx);
+            miny = std::min(miny, fy);
             float rad = sqrt(fx * fx + fy * fy);
-            ret = __max(ret, rad);
+            ret = std::max(ret, rad);
         }
     }
 
